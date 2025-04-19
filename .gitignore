@@ -1,0 +1,9 @@
+# Excel temp files
+~$*.xlsm
+~$*.xlsx
+
+# Claude Code
+.claude/
+
+# macOS
+.DS_Store
