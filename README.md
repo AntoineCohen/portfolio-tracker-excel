@@ -2,13 +2,23 @@
 
 A multi-asset stock portfolio tracker built in Excel with a VBA automation layer, providing real-time data import, multi-currency P&L tracking, and a full analytical layer covering sector breakdown, market-cap classification, Beta, RSI, and probability-of-loss estimates. Built with no external software or paid data provider.
 
-Primary developer in a group project. Grade: 20/20.
-
 ---
 
-## Objective
+## Screenshots
 
-Design a self-contained portfolio management tool that consolidates data acquisition, P&L tracking, and quantitative analysis in a single Excel workbook — operable on any machine with Excel desktop and an internet connection, without API keys or third-party add-ins.
+<p align="center"><sub>Dashboard — Portfolio Summary &amp; Detailed Portfolio</sub></p>
+<img src="screenshots/Dashboard.png" alt="Dashboard" width="100%"/>
+
+<table>
+  <tr>
+    <td width="50%" align="center"><sub>RSI — chart &amp; conditional formatting (RSICalculationModule)</sub><br/><img src="screenshots/RSI.png" alt="RSI" width="100%"/></td>
+    <td width="50%" align="center"><sub>Transactions — trade log</sub><br/><img src="screenshots/Transactions.png" alt="Transactions" width="100%"/></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><sub>Settings &amp; Tools — currency converter &amp; VBA buttons</sub><br/><img src="screenshots/Settings_Tools.png" alt="Settings &amp; Tools" width="100%"/></td>
+    <td width="50%" align="center"><sub>Realized P&amp;L — closed positions &amp; dividends</sub><br/><img src="screenshots/Realized_PnL.png" alt="Realized P&amp;L" width="100%"/></td>
+  </tr>
+</table>
 
 ---
 
@@ -41,6 +51,26 @@ Design a self-contained portfolio management tool that consolidates data acquisi
 
 **Colour convention:** grey cells are locked (formula-driven), orange cells accept user input, blue/white cells have no particular constraint.
 
+### VBA modules
+
+| Module | Role |
+|---|---|
+| [`DataRefreshModule.bas`](vba/DataRefreshModule.bas) | Scheduled auto-refresh via `Application.OnTime` |
+| [`ImportDataFromStooq.bas`](vba/ImportDataFromStooq.bas) | HTTP download from Stooq, CSV import via `QueryTables` |
+| [`RSICalculationModule.bas`](vba/RSICalculationModule.bas) | RSI computation, conditional formatting, chart generation |
+
+---
+
+## How to use
+
+1. Open `PortfolioTracker.xlsm` in Excel (Windows desktop — VBA macros require the desktop application)
+2. Enable macros when prompted
+3. Enter your positions in the `Transactions` sheet (orange cells)
+4. For dividends or transactions in foreign currency, use the currency converter in `Settings & Tools` first
+5. Use the VBA buttons in `Settings & Tools` to start/stop the automatic refresh, import historical data from Stooq, or compute RSI for a given ticker and timeframe
+
+**Requirements:** Microsoft Excel desktop (Windows), macros enabled. No external libraries, add-ins, or API keys required.
+
 ---
 
 ## Engineering decisions
@@ -59,23 +89,6 @@ The Finance API returns prices in the listing currency (USD for NYSE/NASDAQ). Ke
 
 ---
 
-## Screenshots
-
-**Dashboard — KPIs, allocation charts, portfolio evolution, Detailed Portfolio**
-[`screenshots/Dashboard.pdf`](screenshots/Dashboard.pdf)
-
-**VBA modules — source code**
-
-| Module | Role |
-|---|---|
-| [`DataRefreshModule.pdf`](screenshots/DataRefreshModule.pdf) | Scheduled auto-refresh via `Application.OnTime` |
-| [`ImportDataFromStooqModule.pdf`](screenshots/ImportDataFromStooqModule.pdf) | HTTP download from Stooq, CSV import via `QueryTables` |
-| [`RSICalculationModule.pdf`](screenshots/RSICalculationModule.pdf) | RSI computation, conditional formatting, chart generation |
-
-*`Settings & Tools` screenshot to be added (requires Excel desktop for VBA buttons rendering).*
-
----
-
 ## Limitations
 
 - **Chart data ranges are static** — adding new positions requires manually extending chart series; dynamic named ranges were considered but would further bloat an already large name manager
@@ -84,32 +97,25 @@ The Finance API returns prices in the listing currency (USD for NYSE/NASDAQ). Ke
 
 ---
 
-## Repository structure
+## Project structure
 
 ```
 .
 ├── README.md
 ├── .gitignore
 ├── PortfolioTracker.xlsm        # Main workbook — all sheets and VBA modules
+├── vba/
+│   ├── DataRefreshModule.bas    # Scheduled auto-refresh
+│   ├── ImportDataFromStooq.bas  # Stooq HTTP import
+│   └── RSICalculationModule.bas # RSI computation and charting
 └── screenshots/
-    ├── Dashboard.pdf            # Dashboard — Portfolio Summary + Detailed Portfolio
-    ├── DataRefreshModule.pdf    # VBA — scheduled auto-refresh
-    ├── ImportDataFromStooqModule.pdf  # VBA — Stooq HTTP import
-    └── RSICalculationModule.pdf # VBA — RSI computation and charting
+    ├── Dashboard.png            # Dashboard — Portfolio Summary + Detailed Portfolio
+    ├── RSI.png                  # RSI chart with conditional formatting
+    ├── Transactions.png         # Trade log sheet
+    ├── Settings_Tools.png       # Currency converter + VBA buttons
+    └── Realized_PnL.png         # Closed positions and dividends
 ```
 
 ---
 
-## How to use
-
-1. Open `PortfolioTracker.xlsm` in Excel (Windows desktop — VBA macros require the desktop application)
-2. Enable macros when prompted
-3. Enter your positions in the `Transactions` sheet (orange cells)
-4. For dividends or transactions in foreign currency, use the currency converter in `Settings & Tools` first
-5. Use the VBA buttons in `Settings & Tools` to start/stop the automatic refresh, import historical data from Stooq, or compute RSI for a given ticker and timeframe
-
-**Requirements:** Microsoft Excel desktop (Windows), macros enabled. No external libraries, add-ins, or API keys required.
-
----
-
-*Excel project — Université Catholique de Lille, S4, May 2025. Group project: Antoine C., Noah D.-G., Jules D. Grade: 20/20.*
+*Excel & VBA — Antoine C. · Noah D.-G. · Jules D. | Grade: 20/20 | S4, Université Catholique de Lille*
